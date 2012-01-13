@@ -218,6 +218,11 @@ static const NSInteger TAG_OFFSET = 1000;
 
 - (void)setSelectedIndex:(NSUInteger)newSelectedIndex
 {
+	[self setSelectedIndex:newSelectedIndex animated:YES];
+}
+
+- (void)setSelectedIndex:(NSUInteger)newSelectedIndex
+{
 	NSAssert(newSelectedIndex < [self.viewControllers count], @"View controller index out of bounds");
 
 	if ([self.delegate respondsToSelector:@selector(mh_tabBarController:shouldSelectViewController:atIndex:)])
@@ -269,38 +274,53 @@ static const NSInteger TAG_OFFSET = 1000;
 		}
 		else
 		{
-			CGRect rect = contentContainerView.bounds;
-			if (oldSelectedIndex < newSelectedIndex)
-				rect.origin.x = rect.size.width;
+
+			if (animated)
+			{
+				tabButtonsContainerView.userInteractionEnabled = NO;
+				CGRect rect = contentContainerView.bounds;
+				if (oldSelectedIndex < newSelectedIndex)
+					rect.origin.x = rect.size.width;
+				else
+					rect.origin.x = -rect.size.width;
+				
+				toViewController.view.frame = rect;
+				
+				[self transitionFromViewController:fromViewController
+					toViewController:toViewController
+					duration:0.3
+					options:UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionCurveEaseOut
+					animations:^
+					{
+						CGRect rect = fromViewController.view.frame;
+						if (oldSelectedIndex < newSelectedIndex)
+							rect.origin.x = -rect.size.width;
+						else
+							rect.origin.x = rect.size.width;
+
+						fromViewController.view.frame = rect;
+						toViewController.view.frame = contentContainerView.bounds;
+						[self centerIndicatorOnButton:toButton];
+					}
+					completion:^(BOOL finished)
+					{
+						tabButtonsContainerView.userInteractionEnabled = YES;
+
+						if ([self.delegate respondsToSelector:@selector(mh_tabBarController:didSelectViewController:atIndex:)])
+							[self.delegate mh_tabBarController:self didSelectViewController:toViewController atIndex:newSelectedIndex];
+					}
+				 ];
+			}
 			else
-				rect.origin.x = -rect.size.width;
-
-			toViewController.view.frame = rect;
-			tabButtonsContainerView.userInteractionEnabled = NO;
-
-			[self transitionFromViewController:fromViewController
-				toViewController:toViewController
-				duration:0.3
-				options:UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionCurveEaseOut
-				animations:^
-				{
-					CGRect rect = fromViewController.view.frame;
-					if (oldSelectedIndex < newSelectedIndex)
-						rect.origin.x = -rect.size.width;
-					else
-						rect.origin.x = rect.size.width;
-
-					fromViewController.view.frame = rect;
-					toViewController.view.frame = contentContainerView.bounds;
-					[self centerIndicatorOnButton:toButton];
-				}
-				completion:^(BOOL finished)
-				{
-					tabButtonsContainerView.userInteractionEnabled = YES;
-
-					if ([self.delegate respondsToSelector:@selector(mh_tabBarController:didSelectViewController:atIndex:)])
-						[self.delegate mh_tabBarController:self didSelectViewController:toViewController atIndex:newSelectedIndex];
-				}];
+			{
+				[fromViewController.view removeFromSuperview];
+				toViewController.view.frame = contentContainerView.bounds;
+				[contentContainerView addSubview:toViewController.view];
+				[self centerIndicatorOnButton:toButton];
+				
+				if ([self.delegate respondsToSelector:@selector(mh_tabBarController:didSelectViewController:atIndex:)])
+					[self.delegate mh_tabBarController:self didSelectViewController:toViewController atIndex:newSelectedIndex];
+			}
 		}
 	}
 }
@@ -315,10 +335,16 @@ static const NSInteger TAG_OFFSET = 1000;
 
 - (void)setSelectedViewController:(UIViewController *)newSelectedViewController
 {
+	[self setSelectedViewController:newSelectedViewController animated:YES];
+}
+
+- (void)setSelectedViewController:(UIViewController *)newSelectedViewController animated:(BOOL)animated
+{
 	NSUInteger index = [self.viewControllers indexOfObject:newSelectedViewController];
 	if (index != NSNotFound)
-		self.selectedIndex = index;
+		[self setSelectedIndex:index animated:animated];
 }
+
 
 - (void)tabButtonPressed:(UIButton *)sender
 {
