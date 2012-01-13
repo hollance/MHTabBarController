@@ -36,6 +36,8 @@
 @property (nonatomic, weak) id <MHTabBarControllerDelegate> delegate;
 
 - (void)setSelectedViewController:(UIViewController *)newSelectedViewController animated:(BOOL)animated;
+- (void)setSelectedIndex:(NSUInteger)newSelectedIndex animated:(BOOL)animated;
+
 @end
 
 /*!
