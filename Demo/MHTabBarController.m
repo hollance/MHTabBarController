@@ -218,6 +218,11 @@ static const NSInteger TAG_OFFSET = 1000;
 
 - (void)setSelectedIndex:(NSUInteger)newSelectedIndex
 {
+	[self setSelectedIndex:newSelectedIndex animated:YES];
+}
+
+- (void)setSelectedIndex:(NSUInteger)newSelectedIndex
+{
 	NSAssert(newSelectedIndex < [self.viewControllers count], @"View controller index out of bounds");
 
 	if ([self.delegate respondsToSelector:@selector(mh_tabBarController:shouldSelectViewController:atIndex:)])
