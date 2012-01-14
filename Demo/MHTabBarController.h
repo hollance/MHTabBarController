@@ -35,6 +35,9 @@
 @property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, weak) id <MHTabBarControllerDelegate> delegate;
 
+- (void)setSelectedIndex:(NSUInteger)index animated:(BOOL)animated;
+- (void)setSelectedViewController:(UIViewController *)viewController animated:(BOOL)animated;
+
 @end
 
 /*!

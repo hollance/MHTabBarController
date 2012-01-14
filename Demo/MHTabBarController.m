@@ -218,6 +218,11 @@ static const NSInteger TAG_OFFSET = 1000;
 
 - (void)setSelectedIndex:(NSUInteger)newSelectedIndex
 {
+	[self setSelectedIndex:newSelectedIndex animated:NO];
+}
+
+- (void)setSelectedIndex:(NSUInteger)newSelectedIndex animated:(BOOL)animated
+{
 	NSAssert(newSelectedIndex < [self.viewControllers count], @"View controller index out of bounds");
 
 	if ([self.delegate respondsToSelector:@selector(mh_tabBarController:shouldSelectViewController:atIndex:)])
@@ -267,7 +272,7 @@ static const NSInteger TAG_OFFSET = 1000;
 			if ([self.delegate respondsToSelector:@selector(mh_tabBarController:didSelectViewController:atIndex:)])
 				[self.delegate mh_tabBarController:self didSelectViewController:toViewController atIndex:newSelectedIndex];
 		}
-		else
+		else if (animated)
 		{
 			CGRect rect = contentContainerView.bounds;
 			if (oldSelectedIndex < newSelectedIndex)
@@ -302,6 +307,17 @@ static const NSInteger TAG_OFFSET = 1000;
 						[self.delegate mh_tabBarController:self didSelectViewController:toViewController atIndex:newSelectedIndex];
 				}];
 		}
+		else  // not animated
+		{
+			[fromViewController.view removeFromSuperview];
+
+			toViewController.view.frame = contentContainerView.bounds;
+			[contentContainerView addSubview:toViewController.view];
+			[self centerIndicatorOnButton:toButton];
+
+			if ([self.delegate respondsToSelector:@selector(mh_tabBarController:didSelectViewController:atIndex:)])
+				[self.delegate mh_tabBarController:self didSelectViewController:toViewController atIndex:newSelectedIndex];
+		}
 	}
 }
 
@@ -315,14 +331,19 @@ static const NSInteger TAG_OFFSET = 1000;
 
 - (void)setSelectedViewController:(UIViewController *)newSelectedViewController
 {
+	[self setSelectedViewController:newSelectedViewController animated:NO];
+}
+
+- (void)setSelectedViewController:(UIViewController *)newSelectedViewController animated:(BOOL)animated;
+{
 	NSUInteger index = [self.viewControllers indexOfObject:newSelectedViewController];
 	if (index != NSNotFound)
-		self.selectedIndex = index;
+		[self setSelectedIndex:index animated:animated];
 }
 
 - (void)tabButtonPressed:(UIButton *)sender
 {
-	self.selectedIndex = sender.tag - TAG_OFFSET;
+	[self setSelectedIndex:sender.tag - TAG_OFFSET animated:YES];
 }
 
 @end
