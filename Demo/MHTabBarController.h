@@ -29,7 +29,9 @@
  * UITabBarController, except the tabs are at the top and look different.
  */
 @interface MHTabBarController : UIViewController
-
+{
+      BOOL addTopMargin;
+}
 @property (nonatomic, copy) NSArray *viewControllers;
 @property (nonatomic, weak) UIViewController *selectedViewController;
 @property (nonatomic, assign) NSUInteger selectedIndex;
