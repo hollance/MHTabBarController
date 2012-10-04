@@ -37,6 +37,23 @@ static const NSInteger TAG_OFFSET = 1000;
 @synthesize contentContainerView;
 @synthesize indicatorImageView;
 
+@synthesize tabTitleFont;
+@synthesize tabShadowOffset;
+@synthesize tabInactiveBackgroundImage;
+@synthesize tabActiveBackgroundImage;
+@synthesize tabInactiveTitleColor;
+@synthesize tabActiveTitleColor;
+@synthesize tabInactiveShadowColor;
+@synthesize tabActiveShadowColor;
+
+- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {        
+        tabShadowOffset = CGSizeMake(0, 1);
+    }
+    return self;
+}
+
 - (void)centerIndicatorOnButton:(UIButton *)button
 {
 	CGRect rect = indicatorImageView.frame;
@@ -63,27 +80,23 @@ static const NSInteger TAG_OFFSET = 1000;
 		[button setTitle:viewController.title forState:UIControlStateNormal];
 		[button addTarget:self action:@selector(tabButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         
-		button.titleLabel.font = [UIFont boldSystemFontOfSize:18];
-		button.titleLabel.shadowOffset = CGSizeMake(0, 1);
+		button.titleLabel.font = tabTitleFont;
+		button.titleLabel.shadowOffset = tabShadowOffset;
+                
+        [button setBackgroundImage:tabInactiveBackgroundImage forState:UIControlStateNormal];
+        [button setBackgroundImage:tabActiveBackgroundImage forState:UIControlStateHighlighted];
+        [button setBackgroundImage:tabActiveBackgroundImage forState:UIControlStateSelected];
+        [button setBackgroundImage:tabActiveBackgroundImage forState:UIControlStateHighlighted | UIControlStateSelected];
         
-        //TODO: Make this customizable
-        UIImage *imageActive = [[UIImage imageNamed:@"MHTabBarActiveTab"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
-        UIImage *imageInactive = [[UIImage imageNamed:@"MHTabBarInactiveTab"] stretchableImageWithLeftCapWidth:1 topCapHeight:0];
+        [button setTitleColor:tabInactiveTitleColor forState:UIControlStateNormal];
+        [button setTitleColor:tabActiveTitleColor forState:UIControlStateHighlighted];
+        [button setTitleColor:tabActiveTitleColor forState:UIControlStateSelected];
+        [button setTitleColor:tabActiveTitleColor forState:UIControlStateHighlighted | UIControlStateSelected];
         
-        [button setBackgroundImage:imageInactive forState:UIControlStateNormal];
-        [button setBackgroundImage:imageActive forState:UIControlStateHighlighted];
-        [button setBackgroundImage:imageActive forState:UIControlStateSelected];
-        [button setBackgroundImage:imageActive forState:UIControlStateHighlighted | UIControlStateSelected];
-        
-        [button setTitleColor:[UIColor colorWithRed:175/255.0f green:85/255.0f blue:58/255.0f alpha:1.0f] forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
-        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted | UIControlStateSelected];
-        
-        [button setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [button setTitleShadowColor:[UIColor colorWithWhite:0.0f alpha:0.5f] forState:UIControlStateHighlighted];
-        [button setTitleShadowColor:[UIColor colorWithWhite:0.0f alpha:0.5f] forState:UIControlStateSelected];
-        [button setTitleShadowColor:[UIColor colorWithWhite:0.0f alpha:0.5f] forState:UIControlStateHighlighted | UIControlStateSelected];
+        [button setTitleShadowColor:tabInactiveShadowColor forState:UIControlStateNormal];
+        [button setTitleShadowColor:tabActiveShadowColor forState:UIControlStateHighlighted];
+        [button setTitleShadowColor:tabActiveShadowColor forState:UIControlStateSelected];
+        [button setTitleShadowColor:tabActiveShadowColor forState:UIControlStateHighlighted | UIControlStateSelected];
         
 		[button setSelected:NO];
 		[tabButtonsContainerView addSubview:button];
@@ -155,7 +168,29 @@ static const NSInteger TAG_OFFSET = 1000;
         indicatorImageView.frame = rect;
         [self.view addSubview:indicatorImageView];
     }
-
+    
+    if (tabTitleFont == nil) {
+        tabTitleFont = [UIFont boldSystemFontOfSize:18];
+    }
+    if (tabActiveBackgroundImage == nil) {
+        tabActiveBackgroundImage = [[UIImage imageNamed:@"MHTabBarActiveTab"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
+    }
+    if (tabInactiveBackgroundImage == nil) {
+        tabInactiveBackgroundImage = [[UIImage imageNamed:@"MHTabBarInactiveTab"] stretchableImageWithLeftCapWidth:1 topCapHeight:0];
+    }
+    if (tabInactiveTitleColor == nil) {
+        tabInactiveTitleColor = [UIColor colorWithRed:175/255.0f green:85/255.0f blue:58/255.0f alpha:1.0f];
+    }
+    if (tabActiveTitleColor == nil) {
+        tabActiveTitleColor = [UIColor whiteColor];
+    }
+    if (tabInactiveShadowColor == nil) {
+        tabInactiveShadowColor = [UIColor whiteColor];
+    }
+    if (tabActiveShadowColor == nil) {
+        tabActiveShadowColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
+    }
+    
 	[self reloadTabButtons];
 }
 
