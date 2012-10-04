@@ -21,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0B0F9FFB161DAF34000B7AD7 /* MHTabBarController-Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MHTabBarController-Protected.h"; sourceTree = "<group>"; };
 		7BCE96EA1469751600135C63 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BCE96EE1469751600135C63 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7BCE96F01469751600135C63 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -90,6 +91,7 @@
 				7BCE970B146975EA00135C63 /* ListViewController.h */,
 				7BCE970C146975EA00135C63 /* ListViewController.m */,
 				7BCE97001469751600135C63 /* MHTabBarController.h */,
+				0B0F9FFB161DAF34000B7AD7 /* MHTabBarController-Protected.h */,
 				7BCE97011469751600135C63 /* MHTabBarController.m */,
 				7BCE96F51469751600135C63 /* Supporting Files */,
 			);

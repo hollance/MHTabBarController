@@ -23,52 +23,44 @@
  */
 
 #import "MHTabBarController.h"
+#import "MHTabBarController-Protected.h"
 
 static const float TAB_BAR_HEIGHT = 44.0f;
 static const NSInteger TAG_OFFSET = 1000;
 
 @implementation MHTabBarController
-{
-	UIView *tabButtonsContainerView;
-	UIView *contentContainerView;
-	UIImageView *indicatorImageView;
-}
 
-@synthesize viewControllers = _viewControllers;
-@synthesize selectedIndex = _selectedIndex;
-@synthesize delegate = _delegate;
+@synthesize viewControllers;
+@synthesize selectedIndex;
+@synthesize delegate;
+@synthesize tabButtonsContainerView;
+@synthesize contentContainerView;
+@synthesize indicatorImageView;
+
+@synthesize tabTitleFont;
+@synthesize tabShadowOffset;
+@synthesize tabInactiveBackgroundImage;
+@synthesize tabActiveBackgroundImage;
+@synthesize tabInactiveTitleColor;
+@synthesize tabActiveTitleColor;
+@synthesize tabInactiveShadowColor;
+@synthesize tabActiveShadowColor;
+
+- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {        
+        tabShadowOffset = CGSizeMake(0, 1);
+    }
+    return self;
+}
 
 - (void)centerIndicatorOnButton:(UIButton *)button
 {
 	CGRect rect = indicatorImageView.frame;
-	rect.origin.x = button.center.x - floorf(indicatorImageView.frame.size.width/2.0f);
-	rect.origin.y = TAB_BAR_HEIGHT - indicatorImageView.frame.size.height;
+    CGPoint buttonCenter = [[indicatorImageView superview] convertPoint:button.center fromView:button.superview];
+	rect.origin.x = buttonCenter.x - floorf(indicatorImageView.frame.size.width/2.0f);
 	indicatorImageView.frame = rect;
 	indicatorImageView.hidden = NO;
-}
-
-- (void)selectTabButton:(UIButton *)button
-{
-	[button setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-
-	UIImage *image = [[UIImage imageNamed:@"MHTabBarActiveTab"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
-	[button setBackgroundImage:image forState:UIControlStateNormal];
-	[button setBackgroundImage:image forState:UIControlStateHighlighted];
-	
-	[button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-	[button setTitleShadowColor:[UIColor colorWithWhite:0.0f alpha:0.5f] forState:UIControlStateNormal];
-}
-
-- (void)deselectTabButton:(UIButton *)button
-{
-	[button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-
-	UIImage *image = [[UIImage imageNamed:@"MHTabBarInactiveTab"] stretchableImageWithLeftCapWidth:1 topCapHeight:0];
-	[button setBackgroundImage:image forState:UIControlStateNormal];
-	[button setBackgroundImage:image forState:UIControlStateHighlighted];
-
-	[button setTitleColor:[UIColor colorWithRed:175/255.0f green:85/255.0f blue:58/255.0f alpha:1.0f] forState:UIControlStateNormal];
-	[button setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
 }
 
 - (void)removeTabButtons
@@ -86,10 +78,27 @@ static const NSInteger TAG_OFFSET = 1000;
 		UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
 		button.tag = TAG_OFFSET + index;
 		[button setTitle:viewController.title forState:UIControlStateNormal];
-		[button addTarget:self action:@selector(tabButtonPressed:) forControlEvents:UIControlEventTouchDown];
-		button.titleLabel.font = [UIFont boldSystemFontOfSize:18];
-		button.titleLabel.shadowOffset = CGSizeMake(0, 1);
-		[self deselectTabButton:button];
+		[button addTarget:self action:@selector(tabButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        
+		button.titleLabel.font = tabTitleFont;
+		button.titleLabel.shadowOffset = tabShadowOffset;
+                
+        [button setBackgroundImage:tabInactiveBackgroundImage forState:UIControlStateNormal];
+        [button setBackgroundImage:tabActiveBackgroundImage forState:UIControlStateHighlighted];
+        [button setBackgroundImage:tabActiveBackgroundImage forState:UIControlStateSelected];
+        [button setBackgroundImage:tabActiveBackgroundImage forState:UIControlStateHighlighted | UIControlStateSelected];
+        
+        [button setTitleColor:tabInactiveTitleColor forState:UIControlStateNormal];
+        [button setTitleColor:tabActiveTitleColor forState:UIControlStateHighlighted];
+        [button setTitleColor:tabActiveTitleColor forState:UIControlStateSelected];
+        [button setTitleColor:tabActiveTitleColor forState:UIControlStateHighlighted | UIControlStateSelected];
+        
+        [button setTitleShadowColor:tabInactiveShadowColor forState:UIControlStateNormal];
+        [button setTitleShadowColor:tabActiveShadowColor forState:UIControlStateHighlighted];
+        [button setTitleShadowColor:tabActiveShadowColor forState:UIControlStateSelected];
+        [button setTitleShadowColor:tabActiveShadowColor forState:UIControlStateHighlighted | UIControlStateSelected];
+        
+		[button setSelected:NO];
 		[tabButtonsContainerView addSubview:button];
 
 		++index;
@@ -102,8 +111,8 @@ static const NSInteger TAG_OFFSET = 1000;
 	[self addTabButtons];
 
 	// Force redraw of the previously active tab.
-	NSUInteger lastIndex = _selectedIndex;
-	_selectedIndex = NSNotFound;
+	NSUInteger lastIndex = selectedIndex;
+	selectedIndex = NSNotFound;
 	self.selectedIndex = lastIndex;
 }
 
@@ -112,7 +121,7 @@ static const NSInteger TAG_OFFSET = 1000;
 	NSUInteger index = 0;
 	NSUInteger count = [self.viewControllers count];
 
-	CGRect rect = CGRectMake(0, 0, floorf(self.view.bounds.size.width / count), TAB_BAR_HEIGHT);
+	CGRect rect = CGRectMake(0, 0, floorf(tabButtonsContainerView.bounds.size.width / count), tabButtonsContainerView.bounds.size.height);
 
 	indicatorImageView.hidden = YES;
 
@@ -120,7 +129,7 @@ static const NSInteger TAG_OFFSET = 1000;
 	for (UIButton *button in buttons)
 	{
 		if (index == count - 1)
-			rect.size.width = self.view.bounds.size.width - rect.origin.x;
+			rect.size.width = tabButtonsContainerView.bounds.size.width - rect.origin.x;
 
 		button.frame = rect;
 		rect.origin.x += rect.size.width;
@@ -137,21 +146,51 @@ static const NSInteger TAG_OFFSET = 1000;
 	[super viewDidLoad];
 
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	
+    if (tabButtonsContainerView == nil) {
+        CGRect rect = CGRectMake(0, 0, self.view.bounds.size.width, TAB_BAR_HEIGHT);
+        tabButtonsContainerView = [[UIView alloc] initWithFrame:rect];
+        tabButtonsContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        [self.view addSubview:tabButtonsContainerView];
+    }
 
-	CGRect rect = CGRectMake(0, 0, self.view.bounds.size.width, TAB_BAR_HEIGHT);
-	tabButtonsContainerView = [[UIView alloc] initWithFrame:rect];
-	tabButtonsContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	[self.view addSubview:tabButtonsContainerView];
-
-	rect.origin.y = TAB_BAR_HEIGHT;
-	rect.size.height = self.view.bounds.size.height - TAB_BAR_HEIGHT;
-	contentContainerView = [[UIView alloc] initWithFrame:rect];
-	contentContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	[self.view addSubview:contentContainerView];
-
-	indicatorImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MHTabBarIndicator"]];
-	[self.view addSubview:indicatorImageView];
-
+    if (contentContainerView == nil) {
+        CGRect rect = CGRectMake(0, tabButtonsContainerView.frame.size.height, self.view.bounds.size.width, self.view.bounds.size.height - tabButtonsContainerView.frame.size.height);
+        contentContainerView = [[UIView alloc] initWithFrame:rect];
+        contentContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [self.view addSubview:contentContainerView];
+    }
+    
+    if (indicatorImageView == nil) {
+        indicatorImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MHTabBarIndicator"]];
+        CGRect rect = indicatorImageView.frame;
+        rect.origin.y = CGRectGetMaxY(tabButtonsContainerView.frame) - rect.size.height;
+        indicatorImageView.frame = rect;
+        [self.view addSubview:indicatorImageView];
+    }
+    
+    if (tabTitleFont == nil) {
+        tabTitleFont = [UIFont boldSystemFontOfSize:18];
+    }
+    if (tabActiveBackgroundImage == nil) {
+        tabActiveBackgroundImage = [[UIImage imageNamed:@"MHTabBarActiveTab"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
+    }
+    if (tabInactiveBackgroundImage == nil) {
+        tabInactiveBackgroundImage = [[UIImage imageNamed:@"MHTabBarInactiveTab"] stretchableImageWithLeftCapWidth:1 topCapHeight:0];
+    }
+    if (tabInactiveTitleColor == nil) {
+        tabInactiveTitleColor = [UIColor colorWithRed:175/255.0f green:85/255.0f blue:58/255.0f alpha:1.0f];
+    }
+    if (tabActiveTitleColor == nil) {
+        tabActiveTitleColor = [UIColor whiteColor];
+    }
+    if (tabInactiveShadowColor == nil) {
+        tabInactiveShadowColor = [UIColor whiteColor];
+    }
+    if (tabActiveShadowColor == nil) {
+        tabActiveShadowColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
+    }
+    
 	[self reloadTabButtons];
 }
 
@@ -187,26 +226,26 @@ static const NSInteger TAG_OFFSET = 1000;
 	UIViewController *oldSelectedViewController = self.selectedViewController;
 
 	// Remove the old child view controllers.
-	for (UIViewController *viewController in _viewControllers)
+	for (UIViewController *viewController in viewControllers)
 	{
 		[viewController willMoveToParentViewController:nil];
 		[viewController removeFromParentViewController];
 	}
 
-	_viewControllers = [newViewControllers copy];
+	viewControllers = [newViewControllers copy];
 
 	// This follows the same rules as UITabBarController for trying to
 	// re-select the previously selected view controller.
-	NSUInteger newIndex = [_viewControllers indexOfObject:oldSelectedViewController];
+	NSUInteger newIndex = [viewControllers indexOfObject:oldSelectedViewController];
 	if (newIndex != NSNotFound)
-		_selectedIndex = newIndex;
-	else if (newIndex < [_viewControllers count])
-		_selectedIndex = newIndex;
+		selectedIndex = newIndex;
+	else if (newIndex < [viewControllers count])
+		selectedIndex = newIndex;
 	else
-		_selectedIndex = 0;
+		selectedIndex = 0;
 
 	// Add the new child view controllers.
-	for (UIViewController *viewController in _viewControllers)
+	for (UIViewController *viewController in viewControllers)
 	{
 		[self addChildViewController:viewController];
 		[viewController didMoveToParentViewController:self];
@@ -234,28 +273,28 @@ static const NSInteger TAG_OFFSET = 1000;
 
 	if (![self isViewLoaded])
 	{
-		_selectedIndex = newSelectedIndex;
+		selectedIndex = newSelectedIndex;
 	}
-	else if (_selectedIndex != newSelectedIndex)
+	else if (selectedIndex != newSelectedIndex)
 	{
 		UIViewController *fromViewController;
 		UIViewController *toViewController;
 
-		if (_selectedIndex != NSNotFound)
+		if (selectedIndex != NSNotFound)
 		{
-			UIButton *fromButton = (UIButton *)[tabButtonsContainerView viewWithTag:TAG_OFFSET + _selectedIndex];
-			[self deselectTabButton:fromButton];
+			UIButton *fromButton = (UIButton *)[tabButtonsContainerView viewWithTag:TAG_OFFSET + selectedIndex];
+			fromButton.selected = NO;
 			fromViewController = self.selectedViewController;
 		}
 
-		NSUInteger oldSelectedIndex = _selectedIndex;
-		_selectedIndex = newSelectedIndex;
+		NSUInteger oldSelectedIndex = selectedIndex;
+		selectedIndex = newSelectedIndex;
 
 		UIButton *toButton;
-		if (_selectedIndex != NSNotFound)
+		if (selectedIndex != NSNotFound)
 		{
-			toButton = (UIButton *)[tabButtonsContainerView viewWithTag:TAG_OFFSET + _selectedIndex];
-			[self selectTabButton:toButton];
+			toButton = (UIButton *)[tabButtonsContainerView viewWithTag:TAG_OFFSET + selectedIndex];
+			toButton.selected = YES;
 			toViewController = self.selectedViewController;
 		}
 
