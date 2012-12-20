@@ -6,4 +6,4 @@ This is a custom container view controller for iOS 5 that works just like a regu
  
 To customize the tab bar's appearance you currently have to mess around in the code a bit.
  
-The MHTabBarController source code is copyright 2011 Matthijs Hollemans and is licensed under the terms of the MIT license.
+The MHTabBarController source code is copyright 2011-2012 Matthijs Hollemans and is licensed under the terms of the MIT license.

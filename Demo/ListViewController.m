@@ -15,12 +15,6 @@
 	NSLog(@"%@ viewDidLoad", self.title);
 }
 
-- (void)viewDidUnload
-{
-	[super viewDidUnload];
-	NSLog(@"%@ viewDidUnload", self.title);
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
@@ -102,15 +96,14 @@
 	listViewController1.title = @"Another Tab 1";
 	listViewController2.title = @"Another Tab 2";
 
-	NSArray *viewControllers = [NSArray arrayWithObjects:listViewController1, listViewController2, nil];
 	MHTabBarController *tabBarController = [[MHTabBarController alloc] init];
-	tabBarController.viewControllers = viewControllers;
+	tabBarController.viewControllers = @[listViewController1, listViewController2];
 	tabBarController.title = @"Modal Screen";
 	tabBarController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] 
 		initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done:)];
 
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:tabBarController];
-	navController.navigationBar.tintColor = [UIColor colorWithRed:70/255.0f green:80/255.0f blue:90/255.0f alpha:1.0f];
+	navController.navigationBar.tintColor = [UIColor blackColor];
 	[self presentViewController:navController animated:YES completion:nil];
 }
 

@@ -4,8 +4,6 @@
 
 @implementation AppDelegate
 
-@synthesize window = _window;
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 	ListViewController *listViewController1 = [[ListViewController alloc] initWithStyle:UITableViewStylePlain];
@@ -16,7 +14,7 @@
 	listViewController2.title = @"Tab 2";
 	listViewController3.title = @"Tab 3";
 
-	NSArray *viewControllers = [NSArray arrayWithObjects:listViewController1, listViewController2, listViewController3, nil];
+	NSArray *viewControllers = @[listViewController1, listViewController2, listViewController3];
 	MHTabBarController *tabBarController = [[MHTabBarController alloc] init];
 
 	tabBarController.delegate = self;
