@@ -14,6 +14,8 @@
 		7B2C1D1D1683544700542AC1 /* MHTabBarInactiveTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B2C1D171683544700542AC1 /* MHTabBarInactiveTab@2x.png */; };
 		7B2C1D1E1683544700542AC1 /* MHTabBarIndicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B2C1D181683544700542AC1 /* MHTabBarIndicator.png */; };
 		7B2C1D1F1683544700542AC1 /* MHTabBarIndicator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B2C1D191683544700542AC1 /* MHTabBarIndicator@2x.png */; };
+		7B2C1D251683818100542AC1 /* Taijitu.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B2C1D231683818100542AC1 /* Taijitu.png */; };
+		7B2C1D261683818100542AC1 /* Taijitu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B2C1D241683818100542AC1 /* Taijitu@2x.png */; };
 		7B5C62CC168242E9005C3BD4 /* MHTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B5C62CB168242E9005C3BD4 /* MHTabBarController.m */; };
 		7BCE96EF1469751600135C63 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BCE96EE1469751600135C63 /* UIKit.framework */; };
 		7BCE96F11469751600135C63 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BCE96F01469751600135C63 /* Foundation.framework */; };
@@ -32,6 +34,8 @@
 		7B2C1D171683544700542AC1 /* MHTabBarInactiveTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MHTabBarInactiveTab@2x.png"; path = "MHTabBarController/MHTabBarInactiveTab@2x.png"; sourceTree = SOURCE_ROOT; };
 		7B2C1D181683544700542AC1 /* MHTabBarIndicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MHTabBarIndicator.png; path = MHTabBarController/MHTabBarIndicator.png; sourceTree = SOURCE_ROOT; };
 		7B2C1D191683544700542AC1 /* MHTabBarIndicator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MHTabBarIndicator@2x.png"; path = "MHTabBarController/MHTabBarIndicator@2x.png"; sourceTree = SOURCE_ROOT; };
+		7B2C1D231683818100542AC1 /* Taijitu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Taijitu.png; sourceTree = "<group>"; };
+		7B2C1D241683818100542AC1 /* Taijitu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Taijitu@2x.png"; sourceTree = "<group>"; };
 		7B5C62CA168242E9005C3BD4 /* MHTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MHTabBarController.h; path = MHTabBarController/MHTabBarController.h; sourceTree = SOURCE_ROOT; };
 		7B5C62CB168242E9005C3BD4 /* MHTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MHTabBarController.m; path = MHTabBarController/MHTabBarController.m; sourceTree = SOURCE_ROOT; };
 		7BCE96EA1469751600135C63 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -62,6 +66,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7B2C1D221683817700542AC1 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				7B2C1D231683818100542AC1 /* Taijitu.png */,
+				7B2C1D241683818100542AC1 /* Taijitu@2x.png */,
+				7B2C1D121683543D00542AC1 /* Default-568h@2x.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 		7B5C62C9168242DC005C3BD4 /* MHTabBarController */ = {
 			isa = PBXGroup;
 			children = (
@@ -114,6 +128,7 @@
 				7BCE970B146975EA00135C63 /* ListViewController.h */,
 				7BCE970C146975EA00135C63 /* ListViewController.m */,
 				7BCE96F51469751600135C63 /* Supporting Files */,
+				7B2C1D221683817700542AC1 /* Images */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -121,7 +136,6 @@
 		7BCE96F51469751600135C63 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				7B2C1D121683543D00542AC1 /* Default-568h@2x.png */,
 				7BCE96F61469751600135C63 /* Demo-Info.plist */,
 				7BCE96FC1469751600135C63 /* Demo-Prefix.pch */,
 				7BCE96F71469751600135C63 /* InfoPlist.strings */,
@@ -189,6 +203,8 @@
 				7B2C1D1D1683544700542AC1 /* MHTabBarInactiveTab@2x.png in Resources */,
 				7B2C1D1E1683544700542AC1 /* MHTabBarIndicator.png in Resources */,
 				7B2C1D1F1683544700542AC1 /* MHTabBarIndicator@2x.png in Resources */,
+				7B2C1D251683818100542AC1 /* Taijitu.png in Resources */,
+				7B2C1D261683818100542AC1 /* Taijitu@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

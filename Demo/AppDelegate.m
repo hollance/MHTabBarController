@@ -14,6 +14,10 @@
 	listViewController2.title = @"Tab 2";
 	listViewController3.title = @"Tab 3";
 
+	listViewController2.tabBarItem.image = [UIImage imageNamed:@"Taijitu"];
+	listViewController2.tabBarItem.imageInsets = UIEdgeInsetsMake(0.0f, -4.0f, 0.0f, 0.0f);
+	listViewController2.tabBarItem.titlePositionAdjustment = UIOffsetMake(4.0f, 0.0f);
+
 	NSArray *viewControllers = @[listViewController1, listViewController2, listViewController3];
 	MHTabBarController *tabBarController = [[MHTabBarController alloc] init];
 
