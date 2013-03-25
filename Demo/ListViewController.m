@@ -75,7 +75,7 @@
 
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (cell == nil)
-		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
 
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	cell.textLabel.text = [NSString stringWithFormat:@"%@ - Row %d", self.title, indexPath.row];
@@ -90,8 +90,8 @@
 
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-	ListViewController *listViewController1 = [[ListViewController alloc] initWithStyle:UITableViewStylePlain];
-	ListViewController *listViewController2 = [[ListViewController alloc] initWithStyle:UITableViewStylePlain];
+	ListViewController *listViewController1 = [[[ListViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
+	ListViewController *listViewController2 = [[[ListViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
 	
 	listViewController1.title = @"Another Tab 1";
 	listViewController2.title = @"Another Tab 2";
@@ -99,10 +99,10 @@
 	MHTabBarController *tabBarController = [[MHTabBarController alloc] init];
 	tabBarController.viewControllers = @[listViewController1, listViewController2];
 	tabBarController.title = @"Modal Screen";
-	tabBarController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] 
-		initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done:)];
+	tabBarController.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc]
+		initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done:)] autorelease];
 
-	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:tabBarController];
+	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:tabBarController] autorelease];
 	navController.navigationBar.tintColor = [UIColor blackColor];
 	[self presentViewController:navController animated:YES completion:nil];
 }
