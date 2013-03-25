@@ -29,9 +29,9 @@
 @interface MHTabBarController : UIViewController
 
 @property (nonatomic, copy) NSArray *viewControllers;
-@property (nonatomic, weak) UIViewController *selectedViewController;
+@property (nonatomic, retain) UIViewController *selectedViewController;
 @property (nonatomic, assign) NSUInteger selectedIndex;
-@property (nonatomic, weak) id <MHTabBarControllerDelegate> delegate;
+@property (nonatomic, retain) id <MHTabBarControllerDelegate> delegate;
 
 - (void)setSelectedIndex:(NSUInteger)index animated:(BOOL)animated;
 - (void)setSelectedViewController:(UIViewController *)viewController animated:(BOOL)animated;

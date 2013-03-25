@@ -220,8 +220,8 @@ static const NSInteger TagOffset = 1000;
 	}
 	else if (_selectedIndex != newSelectedIndex)
 	{
-		UIViewController *fromViewController;
-		UIViewController *toViewController;
+		UIViewController *fromViewController = nil;
+		UIViewController *toViewController = nil;
 
 		if (_selectedIndex != NSNotFound)
 		{
@@ -291,6 +291,9 @@ static const NSInteger TagOffset = 1000;
 		}
 		else  // not animated
 		{
+			if ( fromViewController == nil || fromViewController.view == nil ) {
+				return;
+			}
 			[fromViewController.view removeFromSuperview];
 
 			toViewController.view.frame = contentContainerView.bounds;
