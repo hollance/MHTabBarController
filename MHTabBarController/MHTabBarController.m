@@ -71,6 +71,17 @@ static const NSInteger TagOffset = 1000;
 	return YES;
 }
 
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+	// propagate didRotateFromInterfaceOrientation to all the child view controllers
+	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+
+	for (UIViewController *viewController in self.viewControllers)
+	{
+		[viewController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+	}
+}
+
 - (void)didReceiveMemoryWarning
 {
 	[super didReceiveMemoryWarning];
