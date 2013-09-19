@@ -34,7 +34,11 @@ static const NSInteger TagOffset = 1000;
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-
+    
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0f) {
+        [self setEdgesForExtendedLayout:UIRectEdgeNone];
+    }
+    
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
 	CGRect rect = CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, self.tabBarHeight);
